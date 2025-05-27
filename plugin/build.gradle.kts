@@ -8,12 +8,12 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    implementation("com.google.code.gson:gson:2.10.1")
+}
+
 testing {
     suites {
-        val test by getting(JvmTestSuite::class) {
-            useKotlinTest("1.9.10")
-        }
-
         val functionalTest by registering(JvmTestSuite::class) {
             useKotlinTest("1.9.10")
 
@@ -23,7 +23,7 @@ testing {
 
             targets {
                 all {
-                    testTask.configure { shouldRunAfter(test) } 
+
                 }
             }
         }
