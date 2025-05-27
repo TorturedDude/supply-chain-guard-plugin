@@ -3,15 +3,25 @@ package io.security.guard.tasks
 import com.google.gson.GsonBuilder
 import org.gradle.api.DefaultTask
 import org.gradle.api.artifacts.ResolvedDependency
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 
-open class GenerateSbomTask : DefaultTask() {
+abstract class GenerateSbomTask : DefaultTask() {
 
-    @OutputFile
-    val outputFile = project.objects.fileProperty().convention(
-        project.layout.buildDirectory.file("reports/sbom.json")
-    )
+    @get:Input
+    abstract val reportPath: Property<String>
+
+    @get:OutputFile
+    abstract val outputFile: RegularFileProperty
+
+    init {
+        outputFile.set(
+            project.layout.buildDirectory.file(reportPath.map { "${it}/sbom.json" })
+        )
+    }
 
     @TaskAction
     fun generate() {
