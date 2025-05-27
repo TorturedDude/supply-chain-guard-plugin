@@ -1,9 +1,6 @@
 name: Start build and tests
 
 on:
-  pull_requests:
-    branches:
-      - develop
   push:
     branches:
       - develop
