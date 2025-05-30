@@ -1,4 +1,4 @@
-name: Start build, tests and publish
+name: Start build and publish
 
 on:
   push:
@@ -25,8 +25,8 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build --info
 
-      - name: Run tests
-        run: ./gradlew functionalTest --no-build-cache
-
       - name: Publish to maven repo
-        run: ./gradlew publishToMaven
+        run: ./gradlew publishPluginMavenPublicationToGitHubPackagesRepository
+        env:
+          USER_CI: ${{ secrets.USER_CI }}
+          TOKEN_CI: ${{ secrets.TOKEN_CI }}

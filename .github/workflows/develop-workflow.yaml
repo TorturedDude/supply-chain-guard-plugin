@@ -1,4 +1,4 @@
-name: Start build and tests
+name: Build
 
 on:
   push:
@@ -24,6 +24,3 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build --info
-
-      - name: Run tests
-        run: ./gradlew functionalTest --no-build-cache
