@@ -1,8 +1,8 @@
-package io.security.guard
+package ru.golovanov.security.guard
 
-import io.security.guard.extentions.SupplyChainGuardExtension
-import io.security.guard.tasks.GenerateSbomTask
-import io.security.guard.tasks.ScanCveTask
+import ru.golovanov.security.guard.extentions.SupplyChainGuardExtension
+import ru.golovanov.security.guard.tasks.GenerateSbomTask
+import ru.golovanov.security.guard.tasks.ScanCveTask
 import org.gradle.api.Project
 import org.gradle.api.Plugin
 
