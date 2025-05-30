@@ -32,9 +32,29 @@ testing {
     }
 }
 
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/OWNER/REPOSITORY")
+            credentials {
+                username = (project.findProperty("gpr.user") ?: System.getenv("USERNAME")) as String?
+                password = (project.findProperty("gpr.key") ?: System.getenv("TOKEN")) as String?
+            }
+        }
+    }
+    publications {
+        register<MavenPublication>("gpr") {
+            groupId = "ru.golovanov.security.guard"
+            artifactId = "supply-chain-guard-gradle-plugin"
+            version = "0.0.9"
+        }
+    }
+}
+
 gradlePlugin {
-    val greeting by plugins.creating {
-        id = "io.security.guard.greeting"
+    val supplyChainGuardGradlePlugin by plugins.creating {
+        id = "ru.golovanov.security.guard.supply-chain-guard-gradle-plugin"
         implementationClass = "io.security.guard.SupplyChainGuardPlugin"
     }
 }
