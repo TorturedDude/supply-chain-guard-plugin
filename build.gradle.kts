@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "ru.golovanov.security.guard"
-version = "0.0.1"
+version = "0.0.2"
 
 val githubUser = System.getenv("USER_CI")
 val githubToken = System.getenv("TOKEN_CI")
@@ -23,7 +23,7 @@ dependencies {
 gradlePlugin {
     plugins {
         create("supplyChainGuard") {
-            id = "ru.golovanov.security.guard.supply-chain-guard"
+            id = "ru.golovanov.security.guard"
             implementationClass = "ru.golovanov.security.guard.SupplyChainGuardPlugin"
         }
     }
@@ -39,8 +39,5 @@ publishing {
                 password = githubToken
             }
         }
-    }
-    publications {
-        create<MavenPublication>("gpr") {}
     }
 }

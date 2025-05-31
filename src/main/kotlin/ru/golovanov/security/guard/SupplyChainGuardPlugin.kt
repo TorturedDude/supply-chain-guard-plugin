@@ -26,9 +26,16 @@ class SupplyChainGuardPlugin : Plugin<Project> {
         }
 
         project.tasks.register("scanCve", ScanCveTask::class.java) {
+            it.scanUsername.set(extension.sonatypeUsername)
+            it.scanToken.set(extension.sonatypeToken)
+            it.borderRateCveForFailure.set(extension.borderRateCveForFailure)
             it.reportPath.set(extension.reportPath)
             it.failOnCritical.set(extension.failOnCritical)
             it.dependsOn("generateSbom")
+        }
+
+        project.tasks.named("build").configure { task ->
+            task.dependsOn("scanCve")
         }
 
         return this
