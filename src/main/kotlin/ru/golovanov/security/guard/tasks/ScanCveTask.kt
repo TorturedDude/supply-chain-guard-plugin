@@ -2,13 +2,13 @@ package ru.golovanov.security.guard.tasks
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import okhttp3.Credentials
 import ru.golovanov.security.guard.dtos.Component
 import ru.golovanov.security.guard.dtos.OssIndexResult
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
-import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
@@ -21,6 +21,15 @@ abstract class ScanCveTask : org.gradle.api.DefaultTask() {
 
     @get:Input
     abstract val failOnCritical: Property<Boolean>
+
+    @get:Input
+    abstract val borderRateCveForFailure: Property<Double>
+
+    @get:Input
+    abstract val scanUsername: Property<String>
+
+    @get:Input
+    abstract val scanToken: Property<String>
 
     @get:Input
     abstract val reportPath: Property<String>
@@ -49,6 +58,7 @@ abstract class ScanCveTask : org.gradle.api.DefaultTask() {
             logger.lifecycle("No components found in SBOM. Skipping scan.")
             return
         }
+        println("Found ${components} components")
 
         val coordinates = components.map { "pkg:maven/${it.group}/${it.name}@${it.version}" }
         val results = fetchVulnerabilities(coordinates)
@@ -67,7 +77,7 @@ abstract class ScanCveTask : org.gradle.api.DefaultTask() {
         val json = file.readText()
         val parsed = gson.fromJson<Map<String, List<Map<String, String>>>>(
             json,
-            object : com.google.gson.reflect.TypeToken<Map<String, List<Map<String, String>>>>() {}.type
+            object : TypeToken<Map<String, List<Map<String, String>>>>() {}.type
         )
 
         return parsed["components"].orEmpty().map {
@@ -85,6 +95,7 @@ abstract class ScanCveTask : org.gradle.api.DefaultTask() {
         val request = Request.Builder()
             .url("https://ossindex.sonatype.org/api/v3/component-report")
             .post(jsonBody.toRequestBody(mediaType))
+            .header("Authorization", Credentials.basic(scanUsername.get(), scanToken.get()))
             .header("Content-Type", "application/json")
             .build()
 
@@ -93,7 +104,7 @@ abstract class ScanCveTask : org.gradle.api.DefaultTask() {
                 throw GradleException("OSS Index API failed: HTTP ${response.code}")
             }
             val body = response.body?.string() ?: throw GradleException("Empty OSS Index response body")
-            val listType = object : com.google.gson.reflect.TypeToken<List<OssIndexResult>>() {}.type
+            val listType = object : TypeToken<List<OssIndexResult>>() {}.type
             return gson.fromJson(body, listType)
         }
     }
@@ -111,7 +122,7 @@ abstract class ScanCveTask : org.gradle.api.DefaultTask() {
                 val title = vulnerability.title ?: "Unknown"
                 println(" - [$score] $title ($cve)")
 
-                if (score >= 9.0) {
+                if (score >= borderRateCveForFailure.get()) {
                     hasCritical = true
                 }
             }
