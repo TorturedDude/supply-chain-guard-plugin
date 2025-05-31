@@ -41,6 +41,6 @@ publishing {
         }
     }
     publications {
-        create<MavenPublication>("gpr") {}
+        create<MavenPublication>("maven") {}
     }
 }
