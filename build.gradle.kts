@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "ru.golovanov.security.guard"
-version = "0.0.2"
+version = "0.0.3"
 
 val githubUser = System.getenv("USER_CI")
 val githubToken = System.getenv("TOKEN_CI")

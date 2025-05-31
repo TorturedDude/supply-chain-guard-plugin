@@ -1,6 +1,6 @@
 # Supply Chain Guard Gradle Plugin
 
-![Build](https://img.shields.io/github/actions/workflow/status/TorturedDude/supply-chain-guard-plugin/develop-workflow.yaml?branch=develop)
+![Build](https://img.shields.io/github/actions/workflow/status/TorturedDude/supply-chain-guard-plugin/main-workflow.yaml?branch=main)
 ![License](https://img.shields.io/github/license/TorturedDude/supply-chain-guard-plugin)
 
 A lightweight Gradle plugin for securing your software supply chain by validating dependencies and integrating security best practices.
@@ -18,7 +18,7 @@ Add the plugin to your `build.gradle.kts`:
 
 ```kotlin
 plugins {
-    id("ru.golovanov.security.guard") version "0.0.2"
+    id("ru.golovanov.security.guard") version "0.0.3"
 }
 ```
 Make sure to include the GitHub Maven repository in your settings.gradle.kts or build.gradle.kts:
