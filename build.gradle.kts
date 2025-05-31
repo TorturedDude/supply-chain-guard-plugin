@@ -23,7 +23,7 @@ dependencies {
 gradlePlugin {
     plugins {
         create("supplyChainGuard") {
-            id = "ru.golovanov"
+            id = "ru.golovanov.security.guard"
             implementationClass = "ru.golovanov.security.guard.SupplyChainGuardPlugin"
         }
     }
@@ -39,8 +39,5 @@ publishing {
                 password = githubToken
             }
         }
-    }
-    publications {
-        create<MavenPublication>("maven") {}
     }
 }
