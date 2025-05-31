@@ -26,7 +26,7 @@ jobs:
         run: ./gradlew build --info
 
       - name: Publish to maven repo
-        run: ./gradlew publishPluginMavenPublicationToGitHubPackagesRepository
+        run: ./gradlew publish
         env:
           USER_CI: ${{ secrets.USER_CI }}
           TOKEN_CI: ${{ secrets.TOKEN_CI }}
