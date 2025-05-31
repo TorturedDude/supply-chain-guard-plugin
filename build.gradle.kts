@@ -40,4 +40,7 @@ publishing {
             }
         }
     }
+    publications {
+        create<MavenPublication>("gpr") {}
+    }
 }
